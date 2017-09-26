@@ -1,0 +1,26 @@
+
+body {
+  color: $clay;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.text--white {
+  color: white;
+}
+
+.text--danger {
+  color: $lava;
+}
+
+.text--small {
+  font-size: $_14;
+
+  line-height: $_20;
+}
+
+.text--bigger {
+  font-size: $_16;
+}

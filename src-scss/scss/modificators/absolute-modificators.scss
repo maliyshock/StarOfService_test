@@ -1,0 +1,68 @@
+.inlined {
+  @include inline-block;
+}
+
+.dnone {
+  display: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.not-seeing {
+  visibility: hidden;
+}
+
+.show-for-tablet-landscape-down {
+  @include for-phone-up {
+    visibility: visible;
+  }
+
+  @include for-tablet-landscape-up {
+    visibility: hidden;
+  }
+}
+
+.hidden-on-mobiles {
+  @include for-phone-only {
+    display: none;
+  }
+}
+
+.bg--white {
+  background-color: #fff;
+}
+
+.bg--danger {
+  background-color: $lava;
+}
+
+.disabled {
+  pointer-events: none;
+  color: $clay;
+}
+
+.stop-clicks {
+  pointer-events: none;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.no-border {
+  border: none;
+}
+
+.hidden-border {
+  border-color: transparent;
+}

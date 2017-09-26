@@ -1,0 +1,107 @@
+.input-wrapper {
+  $c: &;
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  min-width: 80px;
+
+  &__input {
+    @include resetInput;
+
+    width: 100%;
+    min-height: $_32;
+
+    background-image: linear-gradient($orange, $orange), linear-gradient($pencil, $pencil);
+    background-size: 0 1px, 100% 1px;
+    background-repeat: no-repeat;
+    background-position: left bottom, left bottom;
+    background-color: transparent;
+
+    transition: background-size $transition-time cubic-bezier(0.25, 0.1, 0.25, 1);
+
+    font-size: 14px;
+    color: $pencil;
+    line-height: 32px;
+    font-weight: 400;
+
+    &:focus, &.freeze {
+      background-size: 100% 1px, 100% 1px;
+
+      & + #{$c}__placeholder{
+        color: $orange;
+        transform: translateY(0%) scale(0.8);
+      }
+
+      & + #{$c}__placeholder + .form__rubber-line{
+        width: 100%;
+      }
+    }
+
+    &--ghosty {
+      background: none;
+    }
+  }
+
+  &__placeholder {
+    order: -1;
+
+    cursor: text;
+
+    position: relative;
+    width: 100%;
+    height: $_16;
+
+    color: $pencil;
+    font-size: 14px;
+    font-weight: 400;
+
+    text-transform: uppercase;
+
+    transform: translateY(142%);
+
+    transform-origin: 0;
+    transition: transform 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000),
+    color 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000),
+    font-size 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  }
+
+  &.small {
+    width: $_52;
+    min-width: $_52;
+
+    margin-right: $_20;
+  }
+
+
+  &--bottom-bumper {
+    margin-bottom: $_8;
+  }
+
+  &__icon-wrapper {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: $_18;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    width: $_32;
+    height: $_32;
+  }
+
+  &--has-error {
+    & .#{$c}__message {
+      color: $lava;
+    }
+
+    & .#{$c}__input {
+      background-image: linear-gradient($lava, $lava), linear-gradient($pencil, $pencil);
+      background-size: 100% 1px, 100% 1px;
+    }
+  }
+}

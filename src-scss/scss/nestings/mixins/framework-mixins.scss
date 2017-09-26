@@ -1,0 +1,284 @@
+
+@mixin reset-link() {
+    line-height: normal;
+
+    text-decoration: none;
+
+    border-bottom: 1px solid;
+}
+
+@mixin reset-link-no-bd() {
+  line-height: normal;
+
+  text-decoration: none;
+}
+
+@mixin pseudo-elem() {
+    position: absolute;
+
+    display: block;
+
+    content: '';
+}
+
+@mixin inline-block() {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}
+
+
+@mixin tri-r($color, $width, $height) {
+    border-top: $height + px solid transparent;
+    border-bottom: $height / 2 +px solid transparent;
+    border-left: $width + 0 solid $color;
+}
+
+@mixin tri-l($color, $width, $height) {
+    border-top: $height + px solid transparent;
+    border-right: $width + px solid $color;
+    border-bottom: $height / 2 + px solid transparent;
+}
+
+@mixin tri-t($color, $width, $height) {
+    border-right: $width + px solid transparent;
+    border-bottom: $height + px solid $color;
+    border-left: $width + px solid transparent;
+}
+
+@mixin tri-b($color, $width, $height) {
+    border-top: $height + px solid $color;
+    border-right: $width + px solid transparent;
+    border-left: $width + px solid transparent;
+}
+
+@mixin reset-ul {
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+}
+
+@mixin resetInput {
+    border: none;
+    &:focus {
+        outline: none;
+    }
+
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
+
+@mixin resetButton {
+    padding: 0;
+
+    cursor: pointer;
+    text-align: center;
+
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+
+    &:focus {
+        outline: none;
+    }
+}
+ @mixin makeCircle ($width, $height, $bg) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    width: $width;
+    height: $height;
+
+    border-radius: 50%;
+
+    background-color: $bg;
+}
+
+ @mixin colorizeButton ($background-color, $text-color) {
+   background-color: $background-color;
+   color: $text-color;
+
+   &__icon {
+     fill: $text-color;
+   }
+
+   &:hover {
+     background-color: lighten($background-color, 3%) ;
+   }
+
+   &.button--hollow {
+      border-color: $background-color;
+
+      background-color: transparent;
+
+     & .button__text {
+       color: $background-color;
+     }
+
+     & .button__icon {
+       fill: $background-color;
+     }
+
+       &:after {
+         background-color: $background-color;
+       }
+
+       &:hover {
+        background-color: $background-color;
+          & .button__text {
+            color: $text-color;
+          }
+
+         & .button__icon {
+           fill: $text-color;
+         }
+      }
+    }
+
+   &[disabled], &.disabled {
+     &:hover {
+       background-color: $background-color;
+       color: $text-color;
+     }
+   }
+}
+
+@mixin makeMiddle {
+    font-size: 0;
+    &:after {
+        width: 0;
+        height: 100%;
+
+        content: '';
+
+        @include inline-block;
+    }
+}
+
+@mixin placeholder($color) {
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 18- */
+        color: $color;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: $color;
+    }
+
+    &:-ms-input-placeholder {
+        color: $color;
+    }
+}
+
+
+@mixin for-phone-only {
+    @media (max-width: $phone-to) {
+        @content;
+    }
+}
+
+@mixin for-phone-up {
+    @media (min-width: $phone-from) {
+        @content;
+    }
+}
+
+@mixin for-tablet-portrait-up {
+    @media (min-width: $tablet-portrait) {
+        @content;
+    }
+}
+
+@mixin for-tablet-landscape-up {
+    @media (min-width: $tablet-landscape) {
+        @content;
+    }
+}
+
+@mixin for-desktop-up {
+    @media (min-width: $desktop) {
+        @content;
+    }
+}
+
+@mixin for-big-desktop-up {
+    @media (min-width: 1800px) {
+        @content;
+    }
+}
+
+@mixin reset-bg {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@mixin margin-centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@mixin dflex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@mixin gridItemIndents {
+
+  @include for-phone-up {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  @include for-tablet-portrait-up {
+    margin-right: $_20;
+
+    width: auto;
+  }
+}
+
+@mixin cardSize {
+  @include for-phone-up {
+    min-width: 220px;
+    max-width: 260px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include for-tablet-portrait-up {
+    flex-basis: 30%;
+  }
+
+  @include for-tablet-landscape-up {
+    flex-basis: 25%;
+    margin-left: 0;
+  }
+
+  @include for-desktop-up {
+    flex-basis: 20%;
+    max-width: 220px;
+  }
+}
+
+@mixin cardShadow {
+  box-shadow: 0 1px 4px transparentize(black, .9);
+}
+@mixin bigCardShadow {
+  box-shadow: 0 2px 15px transparentize(black, .85);
+}
+
+@mixin svgBackground ($svg) {
+  background-image:
+          url("data:image/svg+xml;utf8,#{$svg}");
+}

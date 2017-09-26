@@ -1,0 +1,62 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  width: 380px;
+  height: 515px;
+
+  border: 1px solid $pencil;
+  border-radius: 5px;
+
+  &__head, &__body, &__footer, &__content {
+    width: 100%;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    min-height: 63px;
+
+    & > * {
+      width: 100%;
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &__footer {
+    display: flex;
+
+    padding: 10px 15px;
+
+    border-top: 1px solid $pencil;
+
+    & > *:last-child {
+      margin-left: auto;
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    text-align: center;
+    font-size: 18px;
+    color: $sky;
+  }
+}

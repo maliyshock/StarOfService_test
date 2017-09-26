@@ -1,0 +1,7 @@
+.form {
+  &__row {
+    & + & {
+      margin-top: 20px;
+    }
+  }
+}
