@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 
 export default class ProgressBar extends Component {
     render() {
-        let progress = this.props.progress ? this.props.progress : 0;
+        let progress = (this.props.currentStep / this.props.steps) * 100;
+
         const style = {
             transform: `translateX(calc(-100% + ${progress}%))`
         }
@@ -15,5 +16,6 @@ export default class ProgressBar extends Component {
 }
 
 ProgressBar.PropTypes = {
-    progress: PropTypes.number.isRequired,
+    currentStep: PropTypes.number.isRequired,
+    steps: PropTypes.number.isRequired,
 }

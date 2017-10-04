@@ -1,93 +1,32 @@
 import React, { PropTypes, Component } from 'react'
-import Input from './Input';
-import Date from './Date';
-import RadioList from './RadioList';
+import Template_1 from './formTemplates/Template_1';
+import Template_2 from './formTemplates/Template_2';
+import Template_3 from './formTemplates/Template_3';
 import ProgressBar from './Progress';
-import Button from './Button';
+import Footer from './Footer';
 
 export default class Card extends Component {
     render() {
-        const { title, currentStep, checkTemplate, stepBackward} = this.props;
+        const { currentStep, changePosition, saveInputInfo, saveDateInfo,  formTemplates, savePasswordInfo, printData} = this.props;
+        const title = currentStep > 2 ? 'Thank you!' : 'Signup';
 
-        let template_1 =  <div className='card__content'>
-                            <div className='form__row'>
-                                <Input
-                                    type='email'
-                                    name='email'
-                                    placeholder='EMAIL IS REQUIRED'
-                                />
-                            </div>
-                            <div className='form__row'>
-                                <Input
-                                    type='password'
-                                    name='password'
-                                    placeholder='PASSWORD'
-                                />
-                            </div>
-                            <div className='form__row'>
-                                <Input
-                                    type='password'
-                                    name='confirm_password'
-                                    placeholder='CONFIRM PASSWORD'
-                                />
-                            </div>
-                        </div>
-
-        let template_2 = <div className='card__content'>
-                            <div className='form__title'>Date of birth</div>
-                            <Date/>
-                            <div className='form__title'>Gender</div>
-                            <RadioList/>
-                        </div>
-
-        let template_3 = <div className='card__content'>
-                            <div className='icon'>icon</div>
-                            <button> Go to dashboard</button>
-                        </div>
-
-        let templates = [template_1, template_2, template_3]
-
-        let progress = (currentStep / templates.length) * 100;
-
-        let footerTemplate
-
-        switch (this.props.currentStep) {
-            case 1: 
-                footerTemplate =    <div className='card__footer'>
-                                        <Button
-                                            modificator='no-border disabled'
-                                            text='Next'
-                                            clickHandler={checkTemplate}
-                                        />
-                                    </div>
-                break;
-            case 2: 
-                footerTemplate =    <div className='card__footer'>
-                                        <Button
-                                            modificator='no-border disabled'
-                                            text='Back'
-                                            onClick={stepBackward}
-                                        />
-                                        <Button
-                                            modificator='no-border disabled'
-                                            text='Next'
-                                            onClick={checkTemplate}
-                                        />
-                                    </div>
-                break;
-
-        }
+        let cardContentWrapperClasses = 'card__content-wrapper';
+        cardContentWrapperClasses += currentStep === 1 ? ' card__content-wrapper--step1': currentStep === 2 ? ' card__content-wrapper--step2': ' card__content-wrapper--step3';
 
         return (
             <div className='card'>
                 <div className='card__head'>
                     <div className='card__title'>{title}</div>
-                    <ProgressBar progress={progress}/>
+                    <ProgressBar currentStep={currentStep} steps='3'/>
                 </div>
                 <div className='card__body'>
-                    {templates[this.props.currentStep - 1]}
+                    <div className={cardContentWrapperClasses}>
+                        <Template_1 savePasswordInfo={savePasswordInfo} saveInputInfo={saveInputInfo} inputs={formTemplates[1]}  />
+                        <Template_2 saveDateInfo={saveDateInfo} saveInputInfo={saveInputInfo} inputs={formTemplates[2]}  />
+                        <Template_3 printData={printData} currentStep={currentStep}/>
+                    </div>
                 </div>
-                {footerTemplate}
+                <Footer changePosition={changePosition} formTemplates={formTemplates} currentStep={currentStep}/>
             </div>
         )
     }

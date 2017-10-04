@@ -22,15 +22,20 @@
     transition: background-size $transition-time cubic-bezier(0.25, 0.1, 0.25, 1);
 
     font-size: 14px;
-    color: $pencil;
+    color: $clay;
     line-height: 32px;
     font-weight: 400;
 
-    &:focus, &.freeze {
+    &:focus {
       background-size: 100% 1px, 100% 1px;
 
-      & + #{$c}__placeholder{
+      & + #{$c}__placeholder {
         color: $orange;
+      }
+    }
+
+    &:focus, &.freeze {
+      & + #{$c}__placeholder {
         transform: translateY(0%) scale(0.8);
       }
 
@@ -95,13 +100,21 @@
   }
 
   &--has-error {
-    & .#{$c}__message {
+    & #{$c}__message, & #{$c}__placeholder, & .form__title  {
       color: $lava;
     }
 
-    & .#{$c}__input {
+    & #{$c}__input {
       background-image: linear-gradient($lava, $lava), linear-gradient($pencil, $pencil);
       background-size: 100% 1px, 100% 1px;
+
+      &:focus{
+        background-image: linear-gradient($orange, $orange), linear-gradient($pencil, $pencil);
+      }
+    }
+
+    & .form__input {
+      border-color: $lava;
     }
   }
 }

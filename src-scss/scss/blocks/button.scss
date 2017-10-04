@@ -1,8 +1,56 @@
 .button {
+  $c: &;
   @include resetButton;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   padding:  12px 8px;
+  
+  border: 1px solid $sky;
+  border-radius: 3px;
 
   font-size: 16px;
   color: $sky;
+
+  transition:
+          background-color $transition-time,
+          color $transition-time;
+
+  &.hovered {
+    &:hover {
+      background-color: $sky;
+      color: white;
+
+      #{$c}__icon {
+        fill: white;
+      }
+    }
+  }
+
+
+  &.centered {
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  &.disabled {
+    color: $pencil;
+    #{$c}__icon {
+      fill: $pencil;
+    }
+  }
+
+  &__icon {
+    fill: $sky;
+    display: block;
+
+    width: 12px;
+    height: 12px;
+
+    margin-left: 10px;
+
+    transition: fill $transition-time;
+  }
 }

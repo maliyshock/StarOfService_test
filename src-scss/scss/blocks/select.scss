@@ -1,0 +1,76 @@
+.select {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 43px;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  box-shadow: inset 0 0 0 1px  $pencil;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  &:after {
+    content:'';
+    display: block;
+
+    width: 12px;
+    height: 12px;
+
+    @include svgBackground($tick);
+    background-size: cover;
+    background-position: center;
+
+    transition: transform $transition-time;
+    transform-origin: 50%;
+  }
+
+  &.opened {
+    &:after {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__droplist {
+    @include reset-ul;
+    position: absolute;
+    left: 0;
+    top: 100%;
+
+    width: 100%;
+
+    border-left: 1px solid $pencil;
+    border-right: 1px solid $pencil;
+    border-bottom: 1px solid $pencil;
+
+    background-color: #fff;
+
+    overflow: auto;
+    max-height: 100px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 43px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+      background-color: $sky;
+    }
+  }
+}
