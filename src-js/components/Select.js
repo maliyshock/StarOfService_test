@@ -18,9 +18,7 @@ export default class Select extends Component {
 
         this.hideDropdown();
 
-        this.setState({
-            value: value,
-        });
+        this.setState({value: value});
 
         this.props.handler(
             {name: name, value: value, step: step}
