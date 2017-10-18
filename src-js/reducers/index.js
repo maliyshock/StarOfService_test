@@ -8,40 +8,32 @@ import {
 } from '../constants/Constants'
 
 const initialState = {
-    currentStep: 1,
-    formTemplates: {
-        1: {
-            inputs: {
-                email: {
-                    value: null,
-                    isCorrect: null
-                },
-                password: {
-                    value: null,
-                    isCorrect: null
-                },
-                confirmPassword: {
-                    value: null,
-                    isCorrect: null
-                }
-            }
+    currentStep: 0,
+    inputs: {
+        email: {
+            value: null,
+            isValid: null
         },
-        2: {
-             inputs: {
-                date: {
-                    value: {
-                        day: null,
-                        month: null,
-                        year: null
-                    },
-                    isCorrect: null
-                },
-                howHearAboutUs: null,
-                gender: {
-                    value: null,
-                    isCorrect: null
-                }
-            }
+        password: {
+            value: null,
+            isValid: null
+        },
+        confirmPassword: {
+            value: null,
+            isValid: null
+        },
+        date: {
+            value: {
+                day: null,
+                month: null,
+                year: null
+            },
+            isValid: null
+        },
+        howHearAboutUs: null,
+        gender: {
+            value: null,
+            isValid: null
         }
     },
     userData: {}
@@ -50,20 +42,13 @@ const initialState = {
 export default function formstate(state = initialState, action) {
     switch (action.type) {
         case INPUT_VALUE_SAVED: {
-
             return {
                 ...state,
-                formTemplates: {
-                    ...state.formTemplates,
-                    [action.playload.step]: {
-                        status: action.playload.status,
-                        inputs: {
-                            ...state.formTemplates[action.playload.step].inputs,
-                            [action.playload.name]: {
-                                value: action.playload.value,
-                                isCorrect: action.playload.isCorrect
-                            }
-                        }
+                inputs: {
+                    ...state.inputs,
+                    [action.payload.name]: {
+                        value: action.payload.value,
+                        isValid: action.payload.isValid
                     }
                 }
             }
@@ -72,20 +57,15 @@ export default function formstate(state = initialState, action) {
         case INPUT_DATE_SAVED: {
             return {
                 ...state,
-                formTemplates: {
-                    ...state.formTemplates,
-                    [action.playload.step]: {
-                        status: action.playload.status,
-                        inputs: {
-                            ...state.formTemplates[action.playload.step].inputs,
-                            [action.playload.name]: {
-                                value: {
-                                    ...state.formTemplates[action.playload.step].inputs[action.playload.name].value,
-                                    ...action.playload.value
-                                },
-                                isCorrect: action.playload.isCorrect
-                            }
-                        }
+                inputs: {
+                    ...state.inputs,
+                    date: {
+                        ...state.inputs.date,
+                        value: {
+                            ...state.inputs.date.value,
+                            [action.payload.name]: action.payload.value
+                        },
+                        isValid: action.payload.isValid
                     }
                 }
             }
@@ -94,21 +74,15 @@ export default function formstate(state = initialState, action) {
         case INPUT_CONFIRM_PASS_FAILED: {
             return {
                 ...state,
-                formTemplates: {
-                    ...state.formTemplates,
-                    [action.playload.step]: {
-                        status: action.playload.status,
-                        inputs: {
-                            ...state.formTemplates[action.playload.step].inputs,
-                            [action.playload.name]: {
-                                value: action.playload.value,
-                                isCorrect: action.playload.isCorrect
-                            },
-                            confirmPassword: {
-                                ...state.formTemplates[action.playload.step].inputs['confirmPassword'],
-                                ...{isCorrect: false}
-                            }
-                        }
+                inputs: {
+                    ...state.inputs,
+                    [action.payload.name]: {
+                        value: action.payload.value,
+                        isValid: action.payload.isValid
+                    },
+                    confirmPassword: {
+                        ...state.inputs['confirmPassword'],
+                        ...{isValid: false}
                     }
                 }
             }
@@ -117,33 +91,26 @@ export default function formstate(state = initialState, action) {
         case INPUT_CONFIRM_PASS_CORRECT: {
             return {
                 ...state,
-                formTemplates: {
-                    ...state.formTemplates,
-                    [action.playload.step]: {
-                        status: action.playload.status,
-                        inputs: {
-                            ...state.formTemplates[action.playload.step].inputs,
-                            [action.playload.name]: {
-                                value: action.playload.value,
-                                isCorrect: action.playload.isCorrect
-                            },
-                            confirmPassword: {
-                                ...state.formTemplates[action.playload.step].inputs['confirmPassword'],
-                                ...{isCorrect: true}
-                            }
-                        }
+                inputs: {
+                    ...state.inputs,
+                    [action.payload.name]: {
+                        value: action.payload.value,
+                        isValid: action.payload.isValid
+                    },
+                    confirmPassword: {
+                        ...state.inputs['confirmPassword'],
+                        ...{isValid: true}
                     }
                 }
             }
         }
 
         case CHANGE_POSITION: {
-            return {...state, currentStep: action.playload};
+            return {...state, currentStep: action.payload};
         }
 
         case PRINT_DATA:
-            console.log(action.playload);
-            return {...state, userData:{value: action.playload}} ;
+            return {...state, userData:{value: action.payload}} ;
 
         default:
             return state;

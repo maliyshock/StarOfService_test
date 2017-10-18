@@ -3,39 +3,35 @@ import {
     INPUT_CONFIRM_PASS_FAILED,
     INPUT_DATE_SAVED,
     PRINT_DATA,
-    INPUT_CONFIRM_PASS_CORRECT,
+    INPUT_CONFIRM_PASS_Valid,
     CHANGE_POSITION
 } from '../constants/Constants'
 
-function isCorrectEmail(value) {
+function isEmailValid(value) {
     let regTemplate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regTemplate.test(value);
 }
 
-function isCorrectPassword(value) {
-    return value.length > 6;
-}
-function isCorrectGender(value) {
-    return value.length > 0;
-}
+const isPasswordValid = (value) => value.length > 6;
+const isGenderValid = (value)=>value.length > 0;
 
-function findDateValue(item, getState, key){
+function findValueDate(item, getState, key){
     const store = getState();
     if(item === undefined) {
-        return store.formTemplates[2].inputs.date.value[key];
+        return store.inputs.date.value[key];
     } else {
         return item;
     }
 }
 
-function isCorrectDate(value, getState) {
+function isDateValid(value, getState) {
     let day = value.day;
     let year = value.year;
     let month = value.month;
 
-    day = findDateValue(day, getState, 'day');
-    year = findDateValue(year, getState, 'year');
-    month = findDateValue(month, getState, 'month');
+    day = findValueDate(day, getState, 'day');
+    year = findValueDate(year, getState, 'year');
+    month = findValueDate(month, getState, 'month');
 
     if(day && month && year) {
         const currentDate = new Date().getFullYear();
@@ -47,81 +43,73 @@ function isCorrectDate(value, getState) {
     }
 }
 
-function isPaswordsSame(value, store, targetName) {
-    return value === store.formTemplates[store.currentStep].inputs[targetName].value
+function isSamePaswords(value, store, targetName) {
+    return value === store.inputs[targetName].value
 }
 
-export function savePasswordInfo(obj) {
+export function saveInputHandler(obj) {
     return (dispatch, getState) => {
         const store = getState();
 
         switch(obj.name) {
-            case 'password': {
-                    obj.isCorrect = isCorrectPassword(obj.value);
-                    if(store.formTemplates[store.currentStep].inputs.confirmPassword.value) {
-                        if(!isPaswordsSame(obj.value, store, 'confirmPassword')) {
-                            dispatch({
-                                type: INPUT_CONFIRM_PASS_FAILED,
-                                playload: obj
-                            })
-                        } else {
-                            dispatch({
-                                type: INPUT_CONFIRM_PASS_CORRECT,
-                                playload: obj
-                            })
-                        }
-                    } else {
-                        dispatch({
-                            type: INPUT_VALUE_SAVED,
-                            playload: obj
-                        })
-                    }
-                break
-            }
-            case 'confirmPassword': {
-                obj.isCorrect = isPaswordsSame(obj.value, store, 'password');
-                dispatch({
-                    type: INPUT_VALUE_SAVED,
-                    playload: obj
-                })
-                break
-            }
-
-            default:
-                break;
-        }
-    }
-}
-
-export function saveDateInfo(obj) {
-    return (dispatch, getState) => {
-        obj.isCorrect = isCorrectDate(obj.value, getState);
-        dispatch({
-            type: INPUT_DATE_SAVED,
-            playload: obj
-        })
-    }
-}
-
-export function saveInputInfo(obj) {
-    return (dispatch) => {
-        switch(obj.name) {
             case 'email': {
-                obj.isCorrect = isCorrectEmail(obj.value);
+                obj.isValid = isEmailValid(obj.value);
                 break
             }
 
             case 'gender': {
-                obj.isCorrect = isCorrectGender(obj.value);
+                obj.isValid = isGenderValid(obj.value);
                 break
             }
+            case 'password': {
+                obj.isValid = isPasswordValid(obj.value);
+                if(store.inputs.confirmPassword.value) {
+                    if(!isSamePaswords(obj.value, store, 'confirmPassword')) {
+                        dispatch({
+                            type: INPUT_CONFIRM_PASS_FAILED,
+                            payload: obj
+                        })
+                    } else {
+                        dispatch({
+                            type: INPUT_CONFIRM_PASS_Valid,
+                            payload: obj
+                        })
+                    }
+                } else {
+                    dispatch({
+                        type: INPUT_VALUE_SAVED,
+                        payload: obj
+                    })
+                }
+                break
+            }
+            case 'confirmPassword': {
+                obj.isValid = isSamePaswords(obj.value, store, 'password');
+                dispatch({
+                    type: INPUT_VALUE_SAVED,
+                    payload: obj
+                })
+                break
+            }
+
+            case 'day':
+            case 'month':
+            case 'year': {
+                obj.isValid = isDateValid(obj.value, getState);
+                dispatch({
+                    type: INPUT_DATE_SAVED,
+                    payload: obj
+                })
+                break;
+            }
+
             default:
                 break;
         }
 
         dispatch({
             type: INPUT_VALUE_SAVED,
-            playload: obj
+            payload: obj
         })
     }
 }
@@ -132,7 +120,7 @@ export function changePosition(step) {
 
         dispatch({
             type: CHANGE_POSITION,
-            playload: newStep
+            payload: newStep
         })
     }
 }
@@ -140,14 +128,14 @@ export function changePosition(step) {
 export function printData() {
     return (dispatch, getState) => {
         const store = getState();
-        const firstTemplate = store.formTemplates[1].inputs;
-        const secondTemplate = store.formTemplates[2].inputs;
-        const dateInMiliSeconds = new Date (secondTemplate.date.value.year,secondTemplate.date.value.month, secondTemplate.date.value.day).getTime();
-        const data = {email: firstTemplate.email, password: firstTemplate.password, date_of_birth: dateInMiliSeconds, gender: secondTemplate.gender,how_hear_about_us: secondTemplate.howHearAboutUs}
+        const inputs = store.inputs;
+        const dateInMiliSeconds = new Date (inputs.date.value.year,inputs.date.value.month, inputs.date.value.day).getTime();
+        const data = {email: inputs.email, password: inputs.password, date_of_birth: dateInMiliSeconds, gender: inputs.gender,how_hear_about_us: inputs.howHearAboutUs}
+        console.log(data);
 
         dispatch({
             type: PRINT_DATA,
-            playload: data
+            payload: data
         })
     }
 }

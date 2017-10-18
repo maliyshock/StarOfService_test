@@ -13,16 +13,14 @@ export default class Select extends Component {
     handleItem(event) {
         const name = this.props.name;
         const value = event.target.innerText;
-        const step = this.props.step;
-
 
         this.hideDropdown();
 
         this.setState({value: value});
 
         this.props.handler(
-            {name: name, value: value, step: step}
-        )
+            {name: name, value: value}
+        );
     }
 
     showDropdown() {
@@ -31,6 +29,7 @@ export default class Select extends Component {
 
     hideDropdown() {
         this.setState({open: false});
+        document.activeElement.blur();
     }
 
 
@@ -47,7 +46,7 @@ export default class Select extends Component {
                 className={selectClassNames}
                 onBlur={() => this.hideDropdown()}
                 onFocus={() => this.showDropdown()}
-                tabIndex='-2'
+                tabIndex={this.props.tabIndex}
             >
                 <div className='select__value'>{value}</div>
                 {this.state.open &&
@@ -60,11 +59,9 @@ export default class Select extends Component {
     }
 }
 
-Select.PropTypes = {
+Select.propTypes = {
     handler: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
-    step: PropTypes.number.isRequired,
-
 }
 

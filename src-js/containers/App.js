@@ -6,16 +6,14 @@ import * as cardActions from '../actions/CardActions'
 
 class App extends Component {
     render() {
-        const { currentStep, formTemplates  } = this.props;
-        const { changePosition, saveInputInfo, saveDateInfo, savePasswordInfo, printData } = this.props.cardActions;
+        const { currentStep, inputs  } = this.props;
+        const { changePosition, saveInputHandler, printData } = this.props.cardActions;
         return  <form action='' className=''>
                     <Card
                         currentStep={currentStep}
                         changePosition={changePosition}
-                        saveDateInfo={saveDateInfo}
-                        savePasswordInfo={savePasswordInfo}
-                        saveInputInfo={saveInputInfo}
-                        formTemplates={formTemplates}
+                        saveInputHandler={saveInputHandler}
+                        inputs={inputs}
                         printData={printData}
                     />
                 </form>
@@ -26,7 +24,7 @@ function mapStateToProps (state) {
     return {
         currentStep: state.currentStep,
         title: state.title,
-        formTemplates: state.formTemplates
+        inputs: state.inputs
     }
 }
 

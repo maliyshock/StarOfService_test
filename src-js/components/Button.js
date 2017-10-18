@@ -8,23 +8,20 @@ export default class Button extends Component {
 
     render() {
         const { icon, text, modificator} = this.props;
-        let iconTemplate;
         const classNames = `button ${modificator}`;
-
-        iconTemplate = icon ? <span className='button__icon'>{icon}</span> : '' ;
 
         return (
             <button tabIndex='-1' className={classNames} onClick={::this.clickHandler}>
                 <span className='button__text'>{text}</span>
-                {iconTemplate}
+                {<span className='button__icon'>{icon}</span>}
             </button>
         )
     }
 }
 
-Button.PropTypes = {
+Button.propTypes = {
     text: PropTypes.string.isRequired,
-    icon: PropTypes.string,
+    icon: PropTypes.object,
     modificator: PropTypes.string,
     clickHandler: PropTypes.func
 }

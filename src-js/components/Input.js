@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 
+import classNames from 'classnames';
+
 export default class Input extends Component {
     constructor(props) {
         super(props);
@@ -9,26 +11,24 @@ export default class Input extends Component {
         const obj = event.target;
         const name = obj.getAttribute('name');
         const value = obj.value;
-        const step = this.props.step;
 
         this.setState({
             value: event.target.value,
         });
-        this.props.handler({name: name, value: value, step: step})
+        this.props.handler({name: name, value: value})
     }
 
     render() {
-        const type = (this.props.type) ? this.props.type : 'text';
-        let wrapperClassNames =  'input-wrapper';
-        let inputClass = 'input-wrapper__input';
+        const type = this.props.type || 'text';
+        let wrapperClassNames =  classNames({
+            'input-wrapper': true,
+            'input-wrapper--has-error': !this.props.input.isValid && (this.props.input.isValid !== null)
+        })
 
-        if (this.state.value) {
-            inputClass += ' freeze';
-        }
-
-        if(this.props.input && this.props.input.isCorrect === false) {
-            wrapperClassNames = 'input-wrapper input-wrapper--has-error '
-        }
+        let inputClass = classNames({
+            'input-wrapper__input': true,
+            'freeze': this.state.value
+        })
 
         return (
             <div className={wrapperClassNames}>
@@ -38,7 +38,7 @@ export default class Input extends Component {
                        value={this.state.value}
                        className={inputClass}
                        onChange={::this.handleChange}
-                       tabIndex='-1'
+                       tabIndex={this.props.tabIndex}
                 />
                 <label htmlFor={this.props.name} className='input-wrapper__placeholder'>{this.props.placeholder}</label>
             </div>
@@ -46,11 +46,10 @@ export default class Input extends Component {
     }
 }
 
-Input.PropTypes = {
+Input.propTypes = {
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     handler: PropTypes.func.isRequired,
-    step: PropTypes.number.isRequired,
     input: PropTypes.object.isRequired,
 }

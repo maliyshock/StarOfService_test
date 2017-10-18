@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames';
 
 export default class Date extends Component {
     constructor(props) {
@@ -13,9 +14,8 @@ export default class Date extends Component {
     executeDateHandler(key, value) {
         this.props.handler(
             {
-                name: this.props.name,
-                value: {[key]: value},
-                step: this.props.step
+                name: key,
+                value: value
             }
         )
     }
@@ -42,12 +42,12 @@ export default class Date extends Component {
     }
 
     render() {
-        let wrapperClassNames =  'input-wrapper';
-        let title = this.props.title ? <h3 className='form__title'>{this.props.title}</h3> : '';
+        let wrapperClassNames =  classNames({
+            'input-wrapper': true,
+            'input-wrapper--has-error': !this.props.input.isValid && (this.props.input.isValid !== null)
+        })
 
-        if(this.props.input && this.props.input.isCorrect === false) {
-            wrapperClassNames = 'input-wrapper input-wrapper--has-error '
-        }
+        let title = this.props.title ? <h3 className='form__title'>{this.props.title}</h3> : '';
 
         return (
             <div className={wrapperClassNames}>
@@ -60,7 +60,7 @@ export default class Date extends Component {
                            onChange={::this.handleChange}
                            maxLength='31'
                            value={this.state.day}
-                           tabIndex='-1'
+                           tabIndex={this.props.tabIndex}
                     />
                     <input name='month'
                            type='number'
@@ -69,7 +69,7 @@ export default class Date extends Component {
                            onChange={::this.handleChange}
                            maxLength='12'
                            value={this.state.month}
-                           tabIndex='-1'
+                           tabIndex={this.props.tabIndex}
                     />
                     <input name='year'
                            type='number'
@@ -78,7 +78,7 @@ export default class Date extends Component {
                            onChange={::this.handleChange}
                            maxLength='9999'
                            value={this.state.year}
-                           tabIndex='-1'
+                           tabIndex={this.props.tabIndex}
                     />
                 </div>
             </div>
@@ -87,10 +87,10 @@ export default class Date extends Component {
 }
 
 
-Date.PropTypes = {
-    step: PropTypes.number.isRequired,
+Date.propTypes = {
     input: PropTypes.object.isRequired,
     handler: PropTypes.func.isRequired,
     title: PropTypes.string,
+    tabIndex: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired
 }

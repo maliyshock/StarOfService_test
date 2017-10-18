@@ -5,67 +5,57 @@ import * as icons from '../constants/icons';
 
 export default class Footer extends Component {
     render(){
-        let footerTemplate;
-        const { changePosition } = this.props;
-        const { email, password, confirmPassword} = this.props.formTemplates[1].inputs;
-        const { date, gender} = this.props.formTemplates[2].inputs;
+        const { changePosition, currentStep } = this.props;
+        const { email, password, confirmPassword, date, gender} = this.props.inputs;
 
-        switch (this.props.currentStep) {
+        switch (currentStep) {
+            case 0: {
+                const goToNextStep =  email.isValid && password.isValid && confirmPassword.isValid;
+                const modificator = goToNextStep ? 'no-border' : 'no-border disabled';
+
+                return(
+                    <div className='card__footer'>
+                        <Button
+                            modificator={modificator}
+                            text='Next'
+                            clickHandler={changePosition}
+                            step={1}
+                            icon={icons.ARROW}
+                        />
+                    </div>
+                )
+            }
+
             case 1: {
-                const goToNextStep =  email.isCorrect && password.isCorrect && confirmPassword.isCorrect;
+                const goToNextStep = date.isValid && gender.isValid;
                 const modificator = goToNextStep ? 'no-border' : 'no-border disabled';
 
-                footerTemplate =    <div className='card__footer'>
-                                        <Button
-                                            modificator={modificator}
-                                            text='Next'
-                                            clickHandler={changePosition}
-                                            step='1'
-                                            icon={icons.ARROW}
-                                        />
-                                    </div>;
-                break;
-            }
-
-            case 2: {
-                const goToNextStep = date.isCorrect && gender.isCorrect;
-                const modificator = goToNextStep ? 'no-border' : 'no-border disabled';
-
-                footerTemplate =    <div className='card__footer'>
-                                        <Button
-                                            modificator='no-border'
-                                            text='Back'
-                                            clickHandler={changePosition}
-                                            step='-1'
-                                        />
-                                        <Button
-                                            modificator={modificator}
-                                            text='Next'
-                                            clickHandler={changePosition}
-                                            step='1'
-                                            icon={icons.ARROW}
-                                        />
-                                    </div>;
-                break;
-            }
-            case 3: {
-                footerTemplate = null;
-                break;
+                return (
+                    <div className='card__footer'>
+                        <Button
+                            modificator='no-border'
+                            text='Back'
+                            clickHandler={changePosition}
+                            step={-1}
+                        />
+                        <Button
+                            modificator={modificator}
+                            text='Next'
+                            clickHandler={changePosition}
+                            step={1}
+                            icon={icons.ARROW}
+                        />
+                    </div>
+                )
             }
 
             default:
-                break;
-
+               return null;
         }
-        return(footerTemplate)
     }
 }
 
-Footer.PropTypes = {
+Footer.propTypes = {
     changePosition: PropTypes.func.isRequired,
-    email: PropTypes.object.isRequired,
-    password: PropTypes.object.isRequired,
-    confirmPassword: PropTypes.object.isRequired,
-    date: PropTypes.object.isRequired,
-    gender: PropTypes.object.isRequired
+    currentStep: PropTypes.number.isRequired
 }
