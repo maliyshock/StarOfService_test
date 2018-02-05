@@ -26,6 +26,7 @@ export default class RegistrationDataTemplate extends Component {
                         type='password'
                         name='password'
                         placeholder='PASSWORD'
+                        notice='(minimum 6 characters)'
                         handler={saveInputHandler}
                         input={password}
                         tabIndex={tabIndex}

@@ -3,7 +3,7 @@ import {
     INPUT_CONFIRM_PASS_FAILED,
     CHANGE_POSITION,
     PRINT_DATA,
-    INPUT_CONFIRM_PASS_CORRECT,
+    INPUT_CONFIRM_PASS_VALID,
     INPUT_DATE_SAVED
 } from '../constants/Constants'
 
@@ -12,15 +12,18 @@ const initialState = {
     inputs: {
         email: {
             value: null,
-            isValid: null
+            isValid: null,
+            error: null
         },
         password: {
             value: null,
-            isValid: null
+            isValid: null,
+            error: null
         },
         confirmPassword: {
             value: null,
-            isValid: null
+            isValid: null,
+            error: null
         },
         date: {
             value: {
@@ -48,7 +51,8 @@ export default function formstate(state = initialState, action) {
                     ...state.inputs,
                     [action.payload.name]: {
                         value: action.payload.value,
-                        isValid: action.payload.isValid
+                        isValid: action.payload.isValid,
+                        error: action.payload.error
                     }
                 }
             }
@@ -78,7 +82,8 @@ export default function formstate(state = initialState, action) {
                     ...state.inputs,
                     [action.payload.name]: {
                         value: action.payload.value,
-                        isValid: action.payload.isValid
+                        isValid: action.payload.isValid,
+                        error: action.payload.error
                     },
                     confirmPassword: {
                         ...state.inputs['confirmPassword'],
@@ -88,18 +93,19 @@ export default function formstate(state = initialState, action) {
             }
         }
 
-        case INPUT_CONFIRM_PASS_CORRECT: {
+        case INPUT_CONFIRM_PASS_VALID: {
             return {
                 ...state,
                 inputs: {
                     ...state.inputs,
                     [action.payload.name]: {
                         value: action.payload.value,
-                        isValid: action.payload.isValid
+                        isValid: action.payload.isValid,
+                        error: action.payload.error
                     },
                     confirmPassword: {
                         ...state.inputs['confirmPassword'],
-                        ...{isValid: true}
+                        ...{isValid: true, error:''}
                     }
                 }
             }

@@ -3,7 +3,7 @@ import {
     INPUT_CONFIRM_PASS_FAILED,
     INPUT_DATE_SAVED,
     PRINT_DATA,
-    INPUT_CONFIRM_PASS_Valid,
+    INPUT_CONFIRM_PASS_VALID,
     CHANGE_POSITION
 } from '../constants/Constants'
 
@@ -54,6 +54,7 @@ export function saveInputHandler(obj) {
         switch(obj.name) {
             case 'email': {
                 obj.isValid = isEmailValid(obj.value);
+                obj.error = obj.isValid ? '' : 'is not valid';
                 break
             }
 
@@ -61,21 +62,31 @@ export function saveInputHandler(obj) {
                 obj.isValid = isGenderValid(obj.value);
                 break
             }
+
             case 'password': {
                 obj.isValid = isPasswordValid(obj.value);
+
                 if(store.inputs.confirmPassword.value) {
                     if(!isSamePaswords(obj.value, store, 'confirmPassword')) {
+                        if (!obj.isValid) {
+                            obj.error = 'should be 6 characters minimum';
+                        } else {
+                            obj.error = 'not the same';
+                        }
+
                         dispatch({
                             type: INPUT_CONFIRM_PASS_FAILED,
                             payload: obj
                         })
                     } else {
+                        obj.error = '';
                         dispatch({
-                            type: INPUT_CONFIRM_PASS_Valid,
+                            type: INPUT_CONFIRM_PASS_VALID,
                             payload: obj
                         })
                     }
                 } else {
+                    obj.error = obj.isValid ? '' : 'should be 6 characters minimum';
                     dispatch({
                         type: INPUT_VALUE_SAVED,
                         payload: obj
@@ -83,8 +94,10 @@ export function saveInputHandler(obj) {
                 }
                 break
             }
+
             case 'confirmPassword': {
                 obj.isValid = isSamePaswords(obj.value, store, 'password');
+                obj.error = obj.isValid ? '' : 'not the same';
                 dispatch({
                     type: INPUT_VALUE_SAVED,
                     payload: obj

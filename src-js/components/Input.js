@@ -7,6 +7,7 @@ export default class Input extends Component {
         super(props);
         this.state = {value: ''};
     }
+
     handleChange(event) {
         const obj = event.target;
         const name = obj.getAttribute('name');
@@ -40,7 +41,7 @@ export default class Input extends Component {
                        onChange={::this.handleChange}
                        tabIndex={this.props.tabIndex}
                 />
-                <label htmlFor={this.props.name} className='input-wrapper__placeholder'>{this.props.placeholder}</label>
+                <label htmlFor={this.props.name} className='input-wrapper__placeholder'><span>{this.props.placeholder}</span> <span>{this.props.input.error}</span></label>
             </div>
         )
     }
