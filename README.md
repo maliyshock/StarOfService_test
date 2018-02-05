@@ -3,6 +3,7 @@
 Test work for Star Of Service company.
 
 ## How to start
+Clone this repository to your computer locally.
 1) npm install – to install dependencies
 2) npm run start – to start server
 
